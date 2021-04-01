@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kencruz/weather-cli/issues"
   },
-  "homepage": "https://github.com/kencruz/weather-cli#readme"
+  "homepage": "https://github.com/kencruz/weather-cli#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
