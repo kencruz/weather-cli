@@ -16,8 +16,20 @@ const argv = yargs
   .help()
   .alias("help", "h").argv;
 
+if (argv._length < 1) {
+  console.log("ERROR: Must input region!");
+}
+
 if (!argv.farhenheit && !argv.celsius) {
   console.log(
-    "ERROR: Must have at least --farhenheit -f or --celsius -c flags in arguments!"
+    "ERROR: Must include farhenheit or celsius values ([--farhenheit|-f] <degrees> | [--celsius|-c] <degrees>)"
   );
+}
+
+if (argv.farhenheit) {
+  console.log("Show farhenheit");
+}
+
+if (argv.celsius) {
+  console.log("Show celsius");
 }
