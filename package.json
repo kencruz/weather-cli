@@ -1,0 +1,24 @@
+{
+  "name": "weather-cli",
+  "version": "1.0.0",
+  "description": "a CLI app that will provide brief weather information of the requested region",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kencruz/weather-cli.git"
+  },
+  "keywords": [
+    "weather",
+    "cli",
+    "node"
+  ],
+  "author": "Ken Cruz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kencruz/weather-cli/issues"
+  },
+  "homepage": "https://github.com/kencruz/weather-cli#readme"
+}
