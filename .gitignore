@@ -117,3 +117,9 @@ dist
 
 # tags
 tags
+
+# personal todo file
+*.todo.md
+
+# weather data
+weather.txt

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const https = require("https");
+const fs = require("fs");
 const yargs = require("yargs");
 const { toCelsius, toFahrenheit } = require("./helper");
 
@@ -92,5 +93,12 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
     const location = await get_coords(argv._.join(" "));
     const weather = await get_weather(location);
     console.log(weather);
+
+    fs.appendFile("weather.txt", weather + "\n", function (err) {
+      if (err) throw err;
+      console.log(
+        "Weather was added to your weather tracking file, weather.txt"
+      );
+    });
   }
 })();
