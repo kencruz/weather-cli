@@ -1,6 +1,5 @@
 require("dotenv").config();
 const https = require("https");
-const EventEmitter = require("events").EventEmitter;
 const yargs = require("yargs");
 const { toCelsius, toFahrenheit } = require("./helper");
 
@@ -20,9 +19,7 @@ const argv = yargs
 
 function get_coords(query) {
   return new Promise((resolve, reject) => {
-    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${argv._.join(
-      " "
-    )}.json?access_token=${process.env.MAPBOX_API}`;
+    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${process.env.MAPBOX_API}`;
 
     https.get(url, (response) => {
       let data = "";
@@ -69,7 +66,7 @@ function get_weather(location) {
           : `${toCelsius(result.current.temp)}C`;
         let output = `Current temperature in ${location.name} is ${temp}.
 Conditions are currently: ${result.current.weather[0].description}.
-What you should expect: ${result.daily[0].weather[0].description} throughout the day.`;
+What you should expect: ${result.daily[0].weather[0].description} throughout the day.\n`;
         resolve(output);
       });
 
@@ -95,11 +92,5 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
     const location = await get_coords(argv._.join(" "));
     const weather = await get_weather(location);
     console.log(weather);
-  }
-
-  if (argv.farhenheit) {
-  }
-
-  if (argv.celsius) {
   }
 })();
