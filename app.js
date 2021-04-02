@@ -2,6 +2,7 @@ require("dotenv").config();
 const https = require("https");
 const EventEmitter = require("events").EventEmitter;
 const yargs = require("yargs");
+const { toCelsius, toFahrenheit } = require("./helper");
 
 const argv = yargs
   .option("farhenheit", {
@@ -63,7 +64,10 @@ function get_weather(location) {
       // The whole response has been received. Print out the result.
       response.on("end", () => {
         let result = JSON.parse(data);
-        let output = `Current temperature in ${location.name} is ${result.current.temp}.
+        let temp = argv.farhenheit
+          ? `${toFahrenheit(result.current.temp)}F`
+          : `${toCelsius(result.current.temp)}C`;
+        let output = `Current temperature in ${location.name} is ${temp}.
 Conditions are currently: ${result.current.weather[0].description}.
 What you should expect: ${result.daily[0].weather[0].description} throughout the day.`;
         resolve(output);
@@ -78,9 +82,12 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
 
 // example function to get started
 (async () => {
-  if (!argv.farhenheit && !argv.celsius) {
+  if (
+    (!argv.farhenheit && !argv.celsius) ||
+    (argv.farhenheit && argv.celsius)
+  ) {
     console.log(
-      "ERROR: Must include farhenheit or celsius flags ([--farhenheit|-f] | [--celsius|-c])"
+      "ERROR: Must include farhenheit or celsius flags but not both ([--farhenheit|-f] | [--celsius|-c])"
     );
   } else if (argv._length < 1) {
     console.log("ERROR: Must input region!");
