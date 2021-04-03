@@ -10,7 +10,7 @@ This CLI app pulls a summary of weather information of the day for the region de
 
 - Can pull precison weather data from a country to down to a street address.
 
-- Option to choose between showing Celsuis or Fareinheit temperatures.
+- Option to choose between showing Celsuis or Fareinheit temperatures, or show both!.
 
 - Saves output data to text file.
 
@@ -45,7 +45,9 @@ $ node app.js Toronto -c
 For showing farhenheit temperatures, add `--farhenheit` or `-f` to the location query.
 ```
 $ node app.js Toronto -f
+
 ```
+Add both flags to display both units!
 
 Weather data queries are saved to `weather.txt`
 
