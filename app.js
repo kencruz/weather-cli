@@ -2,7 +2,7 @@ require("dotenv").config();
 const https = require("https");
 const fs = require("fs");
 const yargs = require("yargs");
-const { toCelsius, toFahrenheit } = require("./helper");
+const { temperatureString } = require("./helper");
 
 // builds arguments
 const argv = yargs
@@ -74,9 +74,11 @@ function get_weather(location) {
         if (result.message) {
           reject("OpenWeather API: " + result.message);
         } else {
-          const temp = argv.farhenheit
-            ? `${toFahrenheit(result.current.temp)}F`
-            : `${toCelsius(result.current.temp)}C`;
+          const temp = temperatureString(
+            argv.celsius,
+            argv.farhenheit,
+            result.current.temp
+          );
           const output = `Current temperature in ${location.name} is ${temp}.
 Conditions are currently: ${result.current.weather[0].description}.
 What you should expect: ${result.daily[0].weather[0].description} throughout the day.\n`;
@@ -98,12 +100,9 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
     throw "ERROR: Must have MAPBOX_API and OPEN_WEATHER_API values in the environment or .env file";
   }
 
-  // check if one flag argument exists
-  if (
-    (!argv.farhenheit && !argv.celsius) ||
-    (argv.farhenheit && argv.celsius)
-  ) {
-    throw "ERROR: Must include farhenheit or celsius flags but not both ([--farhenheit|-f] | [--celsius|-c])";
+  // check if at least one flag argument exists
+  if (!argv.farhenheit && !argv.celsius) {
+    throw "ERROR: Must include at least one farhenheit or celsius flag ([--farhenheit|-f] | [--celsius|-c])";
   }
 
   // check if query was entered
