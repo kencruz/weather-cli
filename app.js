@@ -4,6 +4,7 @@ const fs = require("fs");
 const yargs = require("yargs");
 const { toCelsius, toFahrenheit } = require("./helper");
 
+// builds arguments
 const argv = yargs
   .option("farhenheit", {
     alias: "f",
@@ -20,28 +21,36 @@ const argv = yargs
 
 function get_coords(query) {
   return new Promise((resolve, reject) => {
-    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${process.env.MAPBOX_API}`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${process.env.MAPBOX_API}`;
 
     https.get(url, (response) => {
       let data = "";
 
-      // A chunk of data has been received.
+      // Accumulate received chunk of data
       response.on("data", (chunk) => {
         data += chunk;
       });
 
-      // The whole response has been received. Print out the result.
       response.on("end", () => {
-        let result = JSON.parse(data);
-        let location = {
-          name: result.features[0].place_name,
-          coords: result.features[0].geometry.coordinates,
-        };
-        resolve(location);
+        const result = JSON.parse(data);
+        // check if api response sends an error
+        if (result.message) {
+          reject("Mapbox API: " + result.message);
+        }
+        // check if no results found
+        else if (result.features.length < 1) {
+          reject("ERROR: No coordinates were found with the given query");
+        } else {
+          const location = {
+            name: result.features[0].place_name,
+            coords: result.features[0].geometry.coordinates,
+          };
+          resolve(location);
+        }
       });
 
-      response.on("error", (error) => {
-        reject(error);
+      response.on("error", (e) => {
+        reject(e);
       });
     });
   });
@@ -49,26 +58,30 @@ function get_coords(query) {
 
 function get_weather(location) {
   return new Promise((resolve, reject) => {
-    let url = `https://api.openweathermap.org/data/2.5/onecall?lon=${location.coords[0]}&lat=${location.coords[1]}&exclude=minutely,hourly,alerts&appid=${process.env.OPEN_WEATHER_API}`;
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lon=${location.coords[0]}&lat=${location.coords[1]}&exclude=minutely,hourly,alerts&appid=${process.env.OPEN_WEATHER_API}`;
 
     https.get(url, (response) => {
       let data = "";
 
-      // A chunk of data has been received.
+      // Accumulate received chunk of data
       response.on("data", (chunk) => {
         data += chunk;
       });
 
-      // The whole response has been received. Print out the result.
       response.on("end", () => {
-        let result = JSON.parse(data);
-        let temp = argv.farhenheit
-          ? `${toFahrenheit(result.current.temp)}F`
-          : `${toCelsius(result.current.temp)}C`;
-        let output = `Current temperature in ${location.name} is ${temp}.
+        const result = JSON.parse(data);
+        // check if api response sends an error
+        if (result.message) {
+          reject("OpenWeather API: " + result.message);
+        } else {
+          const temp = argv.farhenheit
+            ? `${toFahrenheit(result.current.temp)}F`
+            : `${toCelsius(result.current.temp)}C`;
+          const output = `Current temperature in ${location.name} is ${temp}.
 Conditions are currently: ${result.current.weather[0].description}.
 What you should expect: ${result.daily[0].weather[0].description} throughout the day.\n`;
-        resolve(output);
+          resolve(output);
+        }
       });
 
       response.on("error", (error) => {
@@ -78,27 +91,38 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
   });
 }
 
-// example function to get started
-(async () => {
+// the main function
+(async function () {
+  // check if api keys exist
+  if (!process.env.MAPBOX_API || !process.env.OPEN_WEATHER_API) {
+    throw "ERROR: Must have MAPBOX_API and OPEN_WEATHER_API values in the environment or .env file";
+  }
+
+  // check if one flag argument exists
   if (
     (!argv.farhenheit && !argv.celsius) ||
     (argv.farhenheit && argv.celsius)
   ) {
-    console.log(
-      "ERROR: Must include farhenheit or celsius flags but not both ([--farhenheit|-f] | [--celsius|-c])"
-    );
-  } else if (argv._length < 1) {
-    console.log("ERROR: Must input region!");
-  } else {
-    const location = await get_coords(argv._.join(" "));
-    const weather = await get_weather(location);
-    console.log(weather);
-
-    fs.appendFile("weather.txt", weather + "\n", function (err) {
-      if (err) throw err;
-      console.log(
-        "Weather was added to your weather tracking file, weather.txt"
-      );
-    });
+    throw "ERROR: Must include farhenheit or celsius flags but not both ([--farhenheit|-f] | [--celsius|-c])";
   }
-})();
+
+  // check if query was entered
+  if (argv._.length < 1) throw "ERROR: Must input region!";
+
+  const query = argv._.join(" ");
+  const location = await get_coords(query).catch((e) => {
+    throw e;
+  });
+  const weather = await get_weather(location).catch((e) => {
+    throw e;
+  });
+  console.log(weather);
+
+  // try to append info to file
+  fs.appendFile("weather.txt", weather + "\n", function (e) {
+    if (e) throw e;
+    console.log("Weather was added to your weather tracking file, weather.txt");
+  });
+})().catch((e) => {
+  console.error(e);
+});
