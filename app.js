@@ -2,6 +2,7 @@ require("dotenv").config();
 const https = require("https");
 const fs = require("fs");
 const yargs = require("yargs");
+const colors = require("colors");
 const { temperatureString } = require("./helper");
 
 // builds arguments
@@ -123,5 +124,5 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
     console.log("Weather was added to your weather tracking file, weather.txt");
   });
 })().catch((e) => {
-  console.error(e);
+  console.error(e.red);
 });
