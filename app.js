@@ -80,10 +80,13 @@ function get_weather(location) {
             argv.farhenheit,
             result.current.temp
           );
-          const output = `Current temperature in ${location.name} is ${temp}.
+          const output = `Current temperature in ${location.name} is ${temp.temperature}.
 Conditions are currently: ${result.current.weather[0].description}.
 What you should expect: ${result.daily[0].weather[0].description} throughout the day.\n`;
-          resolve(output);
+          const output_color = `Current temperature in ${location.name} is ${temp.temperatureColored}.
+Conditions are currently: ${result.current.weather[0].description}.
+What you should expect: ${result.daily[0].weather[0].description} throughout the day.\n`;
+          resolve({ weather: output, weather_color: output_color });
         }
       });
 
@@ -116,10 +119,10 @@ What you should expect: ${result.daily[0].weather[0].description} throughout the
   const weather = await get_weather(location).catch((e) => {
     throw e;
   });
-  console.log(weather);
+  console.log(weather.weather_color);
 
   // try to append info to file
-  fs.appendFile("weather.txt", weather + "\n", function (e) {
+  fs.appendFile("weather.txt", weather.weather + "\n", function (e) {
     if (e) throw e;
     console.log("Weather was added to your weather tracking file, weather.txt");
   });

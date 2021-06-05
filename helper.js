@@ -23,18 +23,18 @@ function tempColor(kelvin, tempString) {
 }
 
 exports.temperatureString = (celsius, farhenheit, kelvin) => {
+  let tempString, tempStringColor;
+
   if (celsius && farhenheit) {
-    const tempString = `${toCelsius(kelvin)}C / ${toFahrenheit(kelvin)}F`;
-    return tempColor(kelvin, tempString);
+    tempString = `${toCelsius(kelvin)}C / ${toFahrenheit(kelvin)}F`;
+    tempStringColor = tempColor(kelvin, tempString);
+  } else if (celsius) {
+    tempString = `${toCelsius(kelvin)}C`;
+    tempStringColor = tempColor(kelvin, tempString);
+  } else {
+    tempString = `${toFahrenheit(kelvin)}F`;
+    tempStringColor = tempColor(kelvin, tempString);
   }
 
-  if (celsius) {
-    const tempString = `${toCelsius(kelvin)}C`;
-    return tempColor(kelvin, tempString);
-  }
-
-  if (farhenheit) {
-    const tempString = `${toFahrenheit(kelvin)}F`;
-    return tempColor(kelvin, tempString);
-  }
+  return { temperature: tempString, temperatureColored: tempStringColor };
 };
