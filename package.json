@@ -4,7 +4,7 @@
   "description": "a CLI app that will provide brief weather information of the requested region",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
