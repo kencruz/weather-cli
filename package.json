@@ -25,5 +25,8 @@
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4"
   }
 }
