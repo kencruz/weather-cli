@@ -1,4 +1,4 @@
-import * as _ from "colors";
+import "colors";
 
 function toFahrenheit(kelvin: number): String {
   return (((kelvin - 273.15) * 9) / 5 + 32).toFixed(2);

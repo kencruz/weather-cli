@@ -4,6 +4,7 @@
   "description": "a CLI app that will provide brief weather information of the requested region",
   "main": "app.js",
   "scripts": {
+    "start": "ts-node src/app.ts",
     "test": "jest",
     "build-ts": "tsc"
   },
@@ -25,6 +26,7 @@
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
+    "ts-node": "^10.0.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ require("dotenv").config();
 import * as https from "https";
 import * as fs from "fs";
 import * as yargs from "yargs";
-import * as _ from "colors";
+import "colors";
 import { temperatureString } from "./helper";
 
 // builds arguments
