@@ -40,11 +40,11 @@ MAPBOX_API=
 
 For showing celsius temperatures, add `--celsius` or `-c` to the location query.
 ```
-$ node app.js Toronto -c
+$ npm start -- Toronto -c
 ```
 For showing farhenheit temperatures, add `--farhenheit` or `-f` to the location query.
 ```
-$ node app.js Toronto -f
+$ npm start -- Toronto -f
 
 ```
 Add both flags to display both units!
@@ -55,3 +55,5 @@ Weather data queries are saved to `weather.txt`
 
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [yargs](https://www.npmjs.com/package/yargs)
+- [colors](https://www.npmjs.com/package/colors)
+- [TypeScript](https://www.npmjs.com/package/typescript)
