@@ -4,7 +4,8 @@
   "description": "a CLI app that will provide brief weather information of the requested region",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build-ts": "tsc"
   },
   "repository": {
     "type": "git",

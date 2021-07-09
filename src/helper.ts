@@ -1,4 +1,4 @@
-import _ from "colors";
+import * as _ from "colors";
 
 function toFahrenheit(kelvin: number): String {
   return (((kelvin - 273.15) * 9) / 5 + 32).toFixed(2);
@@ -25,8 +25,8 @@ function tempColor(kelvin: number, tempString: string): string {
 }
 
 export const temperatureString = (
-  celsius: boolean,
-  farhenheit: boolean,
+  celsius: boolean | undefined,
+  farhenheit: boolean | undefined,
   kelvin: number
 ): { temperature: string; temperatureColored: string } => {
   let tempString: string, tempStringColor: string;

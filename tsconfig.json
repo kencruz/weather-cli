@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "outDir": "./dist",
+      "removeComments": true,
+      "moduleResolution": "node",
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true
+    },
+    "exclude": ["node_modules"],
+    "include": ["./src/**/*.ts"]
+  }
