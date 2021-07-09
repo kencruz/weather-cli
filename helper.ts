@@ -24,7 +24,7 @@ function tempColor(kelvin: number, tempString: string): string {
   return tempString.toString().blue;
 }
 
-exports.temperatureString = (
+export const temperatureString = (
   celsius: boolean,
   farhenheit: boolean,
   kelvin: number
