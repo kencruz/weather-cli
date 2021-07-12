@@ -1,4 +1,4 @@
-const { temperatureString } = require("../helper");
+import { temperatureString } from "../helper";
 
 test("temp string in celsius", () => {
   expect(temperatureString(true, false, 289).temperature).toBe("15.85C");
